@@ -1,13 +1,14 @@
 import os
-from pathlib import Path
+from dotenv import load_dotenv
+load_dotenv()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-SECRET_KEY = 'django-insecure-qu!=1at80slgs*f7qm84n4(9r+fd5$gd%=bpu(3ea@7eu7gdg9'
+SECRET_KEY = os.getenv("SECRET_KEY", 'unsafe-secret-key')
 
-DEBUG = True
+DEBUG = int(os.getenv("DEBUG", default=0))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", '').split(" ")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -61,7 +62,7 @@ WSGI_APPLICATION = 'orders.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
