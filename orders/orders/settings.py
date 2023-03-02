@@ -111,6 +111,15 @@ STORAGE = os.path.join(BASE_DIR, 'storage')
 
 AUTH_USER_MODEL = 'auth_api.User'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.mail.ru')
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'youname@gmail.ru')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'qwerty')
+EMAIL_PORT = os.getenv('EMAIL_PORT', '465')
+EMAIL_USE_SSL = os.getenv('EMAIL_USE_SSL', True)
+SERVER_EMAIL = EMAIL_HOST_USER
+
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 40,
