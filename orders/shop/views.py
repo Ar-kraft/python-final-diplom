@@ -30,6 +30,7 @@ from .serializers import (
     ContactSerializer,
 )
 
+
 class RegisterAccount(APIView):
     """
     Customers registration
@@ -149,6 +150,7 @@ class AccountDetails(APIView):
         else:
             return Response({'Status': False, 'Errors': user_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class CategoryView(viewsets.ModelViewSet):
     """
     viewing category class
@@ -166,6 +168,7 @@ class ShopView(viewsets.ModelViewSet):
     queryset = Shop.objects.all()
     serializer_class = ShopSerializer
     ordering = ('name',)
+
 
 class ProductInfoView(viewsets.ReadOnlyModelViewSet):
     """
@@ -334,6 +337,7 @@ class OrderView(APIView):
         return Response({'Status': False, 'Errors': 'Not all required parameters are used'},
                         status=status.HTTP_400_BAD_REQUEST)
 
+
 class ContactView(APIView):
     """
     Customers contact class
@@ -420,15 +424,15 @@ class PartnerOrders(APIView):
         if request.user.type != 'shop':
             return Response({'Status': False, 'Error': 'Only for shops'}, status=status.HTTP_403_FORBIDDEN)
 
-        pr = Prefetch('ordered_items', queryset=OrderItem.objects.filter(shop__user_id=request.user.id))
-        order = Order.objects.filter(
-            ordered_items__shop__user_id=request.user.id).exclude(status='basket') \
+        pr = Prefetch('ordered_items', queryset=OrderItem.objects.filter(product_info__shop__user_id=request.user.id))
+        order = Order.objects.filter(user_id=request.user.id).exclude(status='basket') \
             .prefetch_related(pr).select_related('contact').annotate(
             total_sum=Sum('ordered_items__total_amount'),
             total_quantity=Sum('ordered_items__quantity'))
 
         serializer = OrderSerializer(order, many=True)
         return Response(serializer.data)
+
 
 class PartnerState(APIView):
     """
