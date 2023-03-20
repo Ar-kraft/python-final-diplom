@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  movies:
+    build: ./orders
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./app/:/usr/src/orders/
+    ports:
+      - 8000:8000
+    env_file:
+      - orders/.env
+    depends_on:
+      - redis
+  redis:
+    image: redis:latest
