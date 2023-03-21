@@ -14,7 +14,7 @@ new_order = Signal('user_id')
 @receiver(reset_password_token_created)
 def password_reset_token_created(sender, instance, reset_password_token, **kwargs):
     """
-    Message with reset-pass token
+    Отправляем письмо с токеном для сброса пароля
     When a token is created, an e-mail needs to be sent to the user
     :param sender: View Class that sent the signal
     :param instance: View Instance that sent the signal
@@ -31,7 +31,7 @@ def password_reset_token_created(sender, instance, reset_password_token, **kwarg
 @receiver(new_user_registered)
 def new_user_registered_signal(user_id, **kwargs):
     """
-    message confirmation of mail
+    отправляем письмо с подтверждением почты
     """
     # send an e-mail to the user
     token, _ = ConfirmEmailToken.objects.get_or_create(user_id=user_id)
@@ -43,11 +43,11 @@ def new_user_registered_signal(user_id, **kwargs):
 @receiver(new_order)
 def new_order_signal(user_id, **kwargs):
     """
-    message of changing status of order
+    отправяем письмо при изменении статуса заказа
     """
     # send an e-mail to the user
     user = User.objects.get(id=user_id)
-    title = "Refreshing status"
-    message = 'Order completed'
+    title = "Обновление статуса заказа"
+    message = 'Заказ сформирован'
     email = user.email
     send_email.apply_async((title, message, email), countdown=5 * 60)

@@ -167,3 +167,40 @@
 1. Создать docker-файл для сборки приложения.
 2. Предоставить инструкцию для сборки docker-образа.
 3. Создать docker-compose файл для развертывания приложения локально (с БД и необходимыми сервисами)
+
+
+
+## Установка
+Последовательно выполнить команды
+
+1
+
+    git clone git@github.com:Ar-kraft/python-final-diplom.git
+2
+```bash
+cd orders
+```
+3
+```
+python3 -m venv env 
+```
+4
+```
+pip install -r requirements.txt
+```
+5
+```
+python manage.py makemigrations
+python manage.py migrate
+
+```
+6
+```bash
+python manage.py createsuperuser
+```
+7
+```bash
+python manage.py runserver
+```
+*  http://127.0.0.1:8000/
+*  https://documenter.getpostman.com/view/16455618/2s93RKyvZY

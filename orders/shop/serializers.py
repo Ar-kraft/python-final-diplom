@@ -11,6 +11,7 @@ from .models import (
 )
 from auth_api.models import User, Contact
 
+
 class ContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = Contact
@@ -20,6 +21,7 @@ class ContactSerializer(serializers.ModelSerializer):
             'user': {'write_only': True}
         }
 
+
 class UserSerializer(serializers.ModelSerializer):
     contacts = ContactSerializer(read_only=True, many=True)
 
@@ -28,11 +30,13 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'first_name', 'last_name', 'email', 'company', 'position', 'type', 'contacts')
         read_only_fields = ('id',)
 
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name',)
         read_only_fields = ('id',)
+
 
 class ShopSerializer(serializers.ModelSerializer):
     class Meta:
@@ -48,12 +52,14 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ('name', 'category',)
 
+
 class ProductParameterSerializer(serializers.ModelSerializer):
     parameter = serializers.StringRelatedField()
 
     class Meta:
         model = ProductParameter
         fields = ('parameter', 'value',)
+
 
 class ProductInfoSerializer(serializers.ModelSerializer):
     product = ProductSerializer(read_only=True)
@@ -64,6 +70,7 @@ class ProductInfoSerializer(serializers.ModelSerializer):
         fields = ('id', 'model', 'product', 'shop', 'quantity', 'price', 'price_rrc', 'product_parameters',)
         read_only_fields = ('id',)
 
+
 class OrderItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderItem
@@ -72,6 +79,7 @@ class OrderItemSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'order': {'write_only': True}
         }
+
 
 class OrderItemCreateSerializer(OrderItemSerializer):
     product_info = ProductInfoSerializer(read_only=True)
