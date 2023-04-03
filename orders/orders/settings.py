@@ -2,6 +2,9 @@ import os
 from dotenv import load_dotenv
 from pathlib import Path
 
+from typing import Dict, Any
+# They're need for making changes into drf-spectacular default configuration (SPECTACULAR_DEFAULTS).
+
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,6 +30,8 @@ INSTALLED_APPS = [
     'import_export',
     'shop',
     'auth_api',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
 ]
 
 MIDDLEWARE = [
@@ -126,6 +131,7 @@ REST_FRAMEWORK = {
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
 
+
     ),
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -136,14 +142,19 @@ REST_FRAMEWORK = {
 
     'DEFAULT_THROTTLE_CLASSES': [
         'rest_framework.throttling.AnonRateThrottle',
-        'rest_framework.throttling.UserRateThrottle'
+        'rest_framework.throttling.UserRateThrottle',
+        'rest_framework.throttling.ScopedRateThrottle',
     ],
     'DEFAULT_THROTTLE_RATES': {
         'anon': '100/day',
         'user': '1000/day',
         'partner': '10/day',
-    }
+    },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
 }
+
+
 
 # REDIS related settings
 REDIS_HOST = os.getenv('REDIS_HOST', 'localhost')
@@ -153,3 +164,7 @@ BROKER_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
 CELERY_RESULT_BACKEND = f'redis://{REDIS_HOST}:{REDIS_PORT}/0'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.AllowAllUsersModelBackend']
+
+SPECTACULAR_DEFAULTS: Dict[str, Any] = {'SCHEMA_PATH_PREFIX': None, }

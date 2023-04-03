@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.db.models import Q, Sum, F
 from django.db.models.query import Prefetch
 from django.http import JsonResponse
+from drf_spectacular.utils import extend_schema
 
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
@@ -38,6 +39,7 @@ class RegisterAccount(APIView):
     throttle_scope = 'anon'
 
     # Регистрация методом POST
+
     def post(self, request, *args, **kwargs):
 
         # проверяем обязательные аргументы
